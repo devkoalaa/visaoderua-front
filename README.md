@@ -15,7 +15,7 @@ Variáveis de ambiente (opcionais):
 
 | Variável | Uso | Padrão |
 | --- | --- | --- |
-| `NEXT_PUBLIC_API_URL` | URL do backend (`/api/products`, `/api/orders/*`) | `http://localhost:3333` |
+| `NEXT_PUBLIC_API_URL` | URL do backend ([visaoderua-backend](https://github.com/daviaragaoyt/visaoderua-backend)) | `http://localhost:3333` em dev, `https://visaoderua-backend.vercel.app` em produção |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | Número do WhatsApp da loja (com DDI) | `5561999999999` |
 | `NEXT_PUBLIC_SITE_URL` | URL pública (metadados / Open Graph) | `https://visaoderua.vercel.app` |
 | `NEXT_PUBLIC_USE_MOCK_CATALOG` | `true` liga o catálogo de demonstração em produção enquanto não há backend | desligado |

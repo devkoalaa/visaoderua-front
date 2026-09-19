@@ -13,7 +13,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 interface PixStepProps {
+  /** id interno, usado para consultar o status. */
   orderId: string;
+  /** número legível exibido ao cliente. */
+  orderNumber: string;
   pix: PixData | null;
   onPaid: () => void;
   onRegenerate: () => void;
@@ -21,7 +24,7 @@ interface PixStepProps {
 
 const POLL_MS = 5000;
 
-export function PixStep({ orderId, pix, onPaid, onRegenerate }: PixStepProps) {
+export function PixStep({ orderId, orderNumber, pix, onPaid, onRegenerate }: PixStepProps) {
   const { seconds, expired } = useCountdown(site.pixExpirationMinutes * 60, true);
   const { copied, copy } = useCopyToClipboard();
 
@@ -60,7 +63,7 @@ export function PixStep({ orderId, pix, onPaid, onRegenerate }: PixStepProps) {
     >
       <div>
         <Badge variant="outline" className="mb-3">
-          Pedido #{orderId}
+          Pedido {orderNumber}
         </Badge>
         <h2 className="font-display text-display-sm uppercase text-foreground">Quase lá, visionário!</h2>
         <p className="mt-2 text-sm text-muted">Escaneie o QR Code ou copie o código para pagar no app do seu banco.</p>

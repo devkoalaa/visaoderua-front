@@ -29,6 +29,9 @@ export interface ApiProduct {
   stock_quantity?: number;
   image_url?: string | null;
   description?: string | null;
+  slug?: string | null;
+  lens_color?: string | null;
+  frame_type?: string | null;
 }
 
 export function normalizeProduct(raw: ApiProduct): Product {
@@ -39,6 +42,9 @@ export function normalizeProduct(raw: ApiProduct): Product {
     stock: Number.isFinite(Number(raw.stock_quantity)) ? Number(raw.stock_quantity) : 99,
     imageUrl: raw.image_url || null,
     description: raw.description ?? undefined,
+    slug: raw.slug ?? undefined,
+    lensColor: raw.lens_color ?? undefined,
+    frameType: raw.frame_type ?? undefined,
     line: detectLine(raw.name),
   };
 }

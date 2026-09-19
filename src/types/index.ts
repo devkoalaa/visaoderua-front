@@ -7,6 +7,9 @@ export interface Product {
   stock: number;
   imageUrl: string | null;
   description?: string;
+  slug?: string;
+  lensColor?: string;
+  frameType?: string;
   line: ProductLine;
 }
 
@@ -42,6 +45,9 @@ export interface CheckoutPayload {
 
 export interface CheckoutResponse {
   orderId: string;
+  /** Número legível do pedido (ex.: VR-1700000000-123). */
+  orderNumber?: string;
+  status?: string;
   paymentResult?: PixData;
 }
 

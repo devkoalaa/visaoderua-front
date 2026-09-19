@@ -66,6 +66,22 @@ export function ProductModal({ product, onClose, onAdd }: ProductModalProps) {
               </h2>
               <Price value={p.price} size="xl" glow />
               <p className="text-sm leading-relaxed text-muted md:text-base">{p.description || DEFAULT_DESCRIPTION}</p>
+              {(p.lensColor || p.frameType) && (
+                <dl className="flex flex-wrap gap-x-6 gap-y-2 text-xs">
+                  {p.lensColor && (
+                    <div>
+                      <dt className="uppercase tracking-widest text-subtle">Lente</dt>
+                      <dd className="mt-0.5 text-foreground/85">{p.lensColor}</dd>
+                    </div>
+                  )}
+                  {p.frameType && (
+                    <div>
+                      <dt className="uppercase tracking-widest text-subtle">Armação</dt>
+                      <dd className="mt-0.5 text-foreground/85">{p.frameType}</dd>
+                    </div>
+                  )}
+                </dl>
+              )}
             </motion.div>
 
             <motion.ul initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="grid grid-cols-2 gap-3 text-xs text-foreground/70">

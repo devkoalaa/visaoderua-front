@@ -22,9 +22,13 @@ interface PaymentStepProps {
   processing: boolean;
 }
 
-const options: { key: PaymentMethod; title: string; desc: string; icon: React.ReactNode; badge?: string }[] = [
+/**
+ * Cartão fica desabilitado até o front gerar o token do Mercado Pago
+ * (paymentData.token) que o backend exige. PIX é o único método ativo.
+ */
+const options: { key: PaymentMethod; title: string; desc: string; icon: React.ReactNode; badge?: string; disabled?: boolean }[] = [
   { key: "pix", title: "PIX", desc: "Aprovação imediata.", icon: <QrCode className="h-6 w-6" />, badge: `${Math.round(site.pixDiscount * 100)}% off` },
-  { key: "credit_card", title: "Cartão de crédito", desc: "Até 3x sem juros.", icon: <CreditCard className="h-6 w-6" /> },
+  { key: "credit_card", title: "Cartão de crédito", desc: "Em breve, até 3x sem juros.", icon: <CreditCard className="h-6 w-6" />, disabled: true },
 ];
 
 export function PaymentStep({ method, onMethodChange, onBack, onSubmit, processing }: PaymentStepProps) {
@@ -70,10 +74,13 @@ export function PaymentStep({ method, onMethodChange, onBack, onSubmit, processi
                 type="button"
                 role="radio"
                 aria-checked={active}
-                onClick={() => onMethodChange(opt.key)}
+                aria-disabled={opt.disabled || undefined}
+                disabled={opt.disabled}
+                onClick={() => !opt.disabled && onMethodChange(opt.key)}
                 className={cn(
                   "relative flex items-center gap-4 rounded-lg border p-4 text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blood",
                   active ? "border-blood bg-blood/5" : "border-line hover:border-line-strong",
+                  opt.disabled && "cursor-not-allowed opacity-50 hover:border-line",
                 )}
               >
                 {active && <motion.span layoutId="payment-active" transition={spring} className="absolute inset-0 rounded-lg ring-1 ring-blood" aria-hidden />}
@@ -81,9 +88,10 @@ export function PaymentStep({ method, onMethodChange, onBack, onSubmit, processi
                   {opt.icon}
                 </span>
                 <span className="flex flex-col">
-                  <span className="flex items-center gap-2 font-display text-xl tracking-widest text-foreground">
+                  <span className="flex flex-wrap items-center gap-2 font-display text-xl tracking-widest text-foreground">
                     {opt.title}
-                    {opt.badge && <Badge variant="blood">{opt.badge}</Badge>}
+                    {opt.badge && <Badge variant="blood" className="shrink-0">{opt.badge}</Badge>}
+                    {opt.disabled && <Badge variant="neutral" className="shrink-0">Em breve</Badge>}
                   </span>
                   <span className="text-xs text-muted">{opt.desc}</span>
                 </span>

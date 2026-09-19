@@ -2,7 +2,10 @@ import type { CheckoutPayload, CheckoutResponse, Product } from "@/types";
 import { normalizeProduct, type ApiProduct } from "@/lib/products";
 import { mockProducts } from "@/data/mock-products";
 
-export const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3333").replace(/\/$/, "");
+const DEFAULT_API_URL = process.env.NODE_ENV === "production" ? "https://visaoderua-backend.vercel.app" : "http://localhost:3333";
+
+/** URL do backend (visaoderua-backend). Pode ser sobrescrita por NEXT_PUBLIC_API_URL. */
+export const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? DEFAULT_API_URL).replace(/\/$/, "");
 
 export class ApiError extends Error {
   constructor(

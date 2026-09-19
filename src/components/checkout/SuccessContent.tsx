@@ -52,7 +52,7 @@ export function SuccessContent() {
           <dl className="relative grid grid-cols-1 gap-5 sm:grid-cols-3">
             <div>
               <dt className="text-xs uppercase tracking-widest text-subtle">Código do pedido</dt>
-              <dd className="mt-1 font-mono text-lg font-bold text-blood">#{orderId}</dd>
+              <dd className="mt-1 break-all font-mono text-lg font-bold text-blood">{orderId}</dd>
             </div>
             <div>
               <dt className="text-xs uppercase tracking-widest text-subtle">Prazo estimado</dt>
@@ -71,7 +71,7 @@ export function SuccessContent() {
           <ButtonLink href="/" size="lg" leftIcon={<Home className="h-5 w-5" />}>
             Voltar pra loja
           </ButtonLink>
-          <ButtonLink href={whatsappLink(`Salve! Acabei de fazer o pedido #${orderId}.`)} variant="whatsapp" size="lg" leftIcon={<MessageCircle className="h-5 w-5" />}>
+          <ButtonLink href={whatsappLink(`Salve! Acabei de fazer o pedido ${orderId}.`)} variant="whatsapp" size="lg" leftIcon={<MessageCircle className="h-5 w-5" />}>
             Falar no WhatsApp
           </ButtonLink>
         </motion.div>

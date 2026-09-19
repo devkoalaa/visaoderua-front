@@ -8,7 +8,7 @@ import { ArrowLeft, ShoppingBag } from "lucide-react";
 import type { PixData } from "@/types";
 import { site } from "@/lib/site";
 import { onlyDigits } from "@/lib/format";
-import { createCheckout } from "@/lib/api";
+import { ApiError, createCheckout } from "@/lib/api";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/components/providers/ToastProvider";
 import { Container } from "@/components/ui/container";
@@ -42,10 +42,12 @@ export function CheckoutFlow() {
 
   const patchForm = useCallback((patch: Partial<CheckoutForm>) => setForm((f) => ({ ...f, ...patch })), []);
 
+  const [orderNumber, setOrderNumber] = useState<string | null>(null);
+
   const finish = useCallback(
-    (id: string) => {
+    (displayNumber: string) => {
       clear();
-      router.push(`/success?order=${encodeURIComponent(id)}`);
+      router.push(`/success?order=${encodeURIComponent(displayNumber)}`);
     },
     [clear, router],
   );
@@ -69,18 +71,21 @@ export function CheckoutFlow() {
         items: items.map((i) => ({ productId: i.id, quantity: i.quantity })),
         paymentMethod: method === "pix" ? "PIX" : "CREDIT_CARD",
       });
-      const id = data.orderId ?? String(Math.floor(Math.random() * 1_000_000));
+      const id = data.orderId;
+      const number = data.orderNumber ?? id;
       setOrderId(id);
+      setOrderNumber(number);
       if (method === "pix") {
         setPix(data.paymentResult ?? null);
         setStep("pix");
-        toast({ variant: "success", title: "PIX gerado", description: `Pedido #${id}${raLabel ? ` · ${raLabel}` : ""}` });
+        toast({ variant: "success", title: "PIX gerado", description: `Pedido ${number}${raLabel ? ` · ${raLabel}` : ""}` });
       } else {
-        finish(id);
+        finish(number);
       }
     } catch (error) {
       console.error("[checkout]", error);
-      toast({ variant: "error", title: "Não rolou processar o pagamento", description: "Tenta de novo em instantes ou chama no WhatsApp." });
+      const detail = error instanceof ApiError && error.status === 400 ? "Confira os dados informados." : "Tenta de novo em instantes ou chama no WhatsApp.";
+      toast({ variant: "error", title: "Não rolou processar o pagamento", description: detail });
     } finally {
       setProcessing(false);
     }
@@ -122,7 +127,7 @@ export function CheckoutFlow() {
               <PaymentStep key="payment" method={method} onMethodChange={setMethod} onBack={() => setStep("address")} onSubmit={submitPayment} processing={processing} />
             )}
             {step === "pix" && orderId && (
-              <PixStep key="pix" orderId={orderId} pix={pix} onPaid={() => finish(orderId)} onRegenerate={() => setStep("payment")} />
+              <PixStep key="pix" orderId={orderId} orderNumber={orderNumber ?? orderId} pix={pix} onPaid={() => finish(orderNumber ?? orderId)} onRegenerate={() => setStep("payment")} />
             )}
           </AnimatePresence>
         </div>
