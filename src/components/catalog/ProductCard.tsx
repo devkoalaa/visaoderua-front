@@ -41,9 +41,9 @@ export const ProductCard = forwardRef<HTMLElement, ProductCardProps>(function Pr
         type="button"
         onClick={() => onOpen(product)}
         aria-label={`Ver detalhes de ${product.name}`}
-        className="relative aspect-[4/3] w-full overflow-hidden bg-gradient-to-t from-white/[0.04] to-transparent focus-visible:outline-none"
+        className="relative isolate aspect-[4/3] w-full overflow-hidden bg-asphalt-800 [transform:translateZ(0)] focus-visible:outline-none"
       >
-        <div className="absolute inset-0 transition-transform duration-600 ease-out-expo group-hover:scale-105">
+        <div className="absolute -inset-px transition-transform duration-600 ease-out-expo will-change-transform group-hover:scale-105">
           <ProductImage src={product.imageUrl} alt={product.name} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" />
         </div>
         <div className="absolute left-3 top-3 flex flex-col items-start gap-1.5">
